@@ -28,8 +28,11 @@ export function Gameboard() {
         return board;
     }
 
+    const shipsPlaced = [];
+
     function placeShip(row, col, ship) {
         const cordsArr = findValidBoardCoords(row, col, ship.getLength());
+        shipsPlaced.push(ship);
         for (let cord of cordsArr) {
             board[cord[0]][cord[1]] = ship;
         }
@@ -61,11 +64,19 @@ export function Gameboard() {
         }
     }
 
+    function allShipsDestroyed() {
+        for (let ship of shipsPlaced) {
+            if (!ship.isSunk()) return false;
+        }
+        return true;
+    }
+
     return {
         placeShip,
         getBoard,
         receiveAttack,
         getMissedAttacks,
         getHitAttacks,
+        allShipsDestroyed,
     };
 }

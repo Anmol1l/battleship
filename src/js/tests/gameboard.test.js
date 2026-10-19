@@ -24,4 +24,11 @@ describe("Gameboard", () => {
         board.receiveAttack(0,0);
         expect(board.getMissedAttacks()).toContain('0,0')
     })
+
+    test('check if all ships destroyed', () => {
+        expect(board.allShipsDestroyed()).toBe(false);
+        board.receiveAttack(5, 6);
+        board.receiveAttack(5, 7);
+        expect(board.allShipsDestroyed()).toBe(true);
+    })
 });
