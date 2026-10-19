@@ -16,6 +16,7 @@ export default defineConfig([
         },
         rules: {
             "no-unused-vars": "off",
+            "no-empty": "off",
         },
     },
 ]);
