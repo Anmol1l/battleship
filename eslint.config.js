@@ -14,6 +14,8 @@ export default defineConfig([
                 ...globals.node,
             },
         },
-        "no-unused-vars": "off",
+        rules: {
+            "no-unused-vars": "off",
+        },
     },
 ]);
