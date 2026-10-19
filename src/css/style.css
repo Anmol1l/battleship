@@ -1,0 +1,36 @@
+* {
+    margin: 0px;
+}
+
+header {
+    background-color: #5e1f1f;
+    font-family: fantasy;
+}
+
+header h1 {
+    color: white;
+    font-size: 3rem;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+}
+
+body {
+    background-color: peachpuff;
+    display: grid;
+}
+
+main {
+    display: flex;
+    height: 100%;
+}
+
+main > section {
+    width: 50%;
+    height: 100%;
+}
+
+.player > h2 {
+    display: flex;
+    justify-content: center;
+}
