@@ -30,9 +30,42 @@ export function Gameboard() {
 
     function placeShip(row, col, ship) {
         const cordsArr = findValidBoardCoords(row, col, ship.getLength());
-        for(let cord of cordsArr) {
+        for (let cord of cordsArr) {
             board[cord[0]][cord[1]] = ship;
         }
     }
-    return { placeShip, getBoard };
+
+    const storeMissedAttacks = [];
+    function getMissedAttacks() {
+        return storeMissedAttacks;
+    }
+
+    const storeHitAttacks = [];
+    function getHitAttacks() {
+        return storeHitAttacks;
+    }
+
+    function checkIfHit(row, col) {
+        return storeHitAttacks.includes(`${row},${col}`);
+    }
+
+    function receiveAttack(row, col) {
+        if (checkIfHit(row, col)) return -1;
+
+        if (board[row][col]) {
+            let ship = board[row][col];
+            ship.hit();
+            storeHitAttacks.push(`${row},${col}`);
+        } else {
+            storeMissedAttacks.push(`${row},${col}`);
+        }
+    }
+
+    return {
+        placeShip,
+        getBoard,
+        receiveAttack,
+        getMissedAttacks,
+        getHitAttacks,
+    };
 }
