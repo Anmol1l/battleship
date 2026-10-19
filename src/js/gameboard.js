@@ -18,15 +18,21 @@ export function findValidBoardCoords(row, col, length) {
     return cordArray;
 }
 
-findValidBoardCoords(9, 9, 10);
+findValidBoardCoords(9, 9, 1);
 
 export function Gameboard() {
     const rows = 10;
     const cols = 10;
     const board = Array.from({ length: rows }, () => Array(cols).fill(0));
-
-    function placeShip() {
-        // return findValidBoardCoords(0,0,2);
+    function getBoard() {
+        return board;
     }
-    return { placeShip };
+
+    function placeShip(row, col, ship) {
+        const cordsArr = findValidBoardCoords(row, col, ship.getLength());
+        for(let cord of cordsArr) {
+            board[cord[0]][cord[1]] = ship;
+        }
+    }
+    return { placeShip, getBoard };
 }
