@@ -1,7 +1,5 @@
-import { Player } from "./player.js";
-
-export function monitorAttacks(player) {
-    const squares = document.querySelectorAll('.square');
+export function monitorAttacks(player, boardNum) {
+    const squares = document.querySelectorAll(`.board${boardNum} > .square`);
     squares.forEach(square => {
         square.addEventListener('click', () => {
             const cordsData = square.dataset.cords;
@@ -10,6 +8,10 @@ export function monitorAttacks(player) {
             if(player.board.getBoard()[cord[0]][cord[1]] === 0)
                 square.classList.add('miss', 'hit')
             else square.classList.add('success', 'hit')
+
+            if(player.checkWin()) {
+                alert(`${player.getName()} wins`)
+            }
         })
     })
 }
