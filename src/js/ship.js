@@ -1,6 +1,11 @@
 export function Ship(l) {
     const length = l;
     let hits = 0;
+    const color = "pink";
+
+    function getColor() {
+        return color;
+    }
 
     function getLength() {
         return length;
@@ -20,5 +25,5 @@ export function Ship(l) {
         return length === hits;
     }
 
-    return { getLength, getHits, hit, isSunk };
+    return { getLength, getHits, hit, isSunk, getColor };
 }

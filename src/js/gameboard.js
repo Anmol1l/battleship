@@ -34,6 +34,10 @@ export function Gameboard() {
         const cordsArr = findValidBoardCoords(row, col, ship.getLength());
         shipsPlaced.push(ship);
         for (let cord of cordsArr) {
+            
+            if(!Number.isInteger(board[cord[0]][cord[1]]))
+                throw new Error('Choose different Coords');
+
             board[cord[0]][cord[1]] = ship;
         }
     }
@@ -82,3 +86,5 @@ export function Gameboard() {
         allShipsDestroyed,
     };
 }
+
+window.Gameboard = Gameboard;

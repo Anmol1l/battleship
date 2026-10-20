@@ -7,6 +7,9 @@ export function renderBoard(board, canvas) {
             const square = document.createElement('div');
             square.classList.add('square');
             square.dataset.cords = `${i},${j}`;
+            if(board.getBoard()[i][j]) {
+                square.classList.add('ship');
+            }
             canvas.appendChild(square);
         }
     }
