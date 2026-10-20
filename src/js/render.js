@@ -1,5 +1,3 @@
-import { Gameboard } from "./gameboard.js";
-
 export function renderBoard(board, canvas) {
 
     for (let i = 0; i < board.rows; i++) {

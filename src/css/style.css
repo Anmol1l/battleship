@@ -27,19 +27,15 @@ main {
 
 main > section {
     width: 50%;
-    height: 100vh
-}
-
-.player > h2 {
-    display: flex;
-    justify-content: center;
+    height: 100vh;
 }
 
 .square {
     border: 1px solid black;
 }
 
-.board1, .board2 {
+.board1,
+.board2 {
     display: grid;
     box-sizing: border-box;
     grid-template-columns: repeat(10, minmax(25px, 50px));
@@ -62,4 +58,54 @@ main > section {
     background-repeat: no-repeat;
     background-size: 50px;
     background-position: center;
+}
+
+.buttons-ship1, .buttons-ship2 {
+    height: 250px;
+    width: 502px;
+    place-self: center;
+    /* border: 2px solid black; */
+    margin-top: 20px;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.buttons > button {
+    height: 35px;
+    width: 120px;
+    border: 1px solid black;
+    text-align: center;
+    border-radius: 8px;
+    font-size: 1rem;
+    color: white;
+}
+
+.randomise {
+    background-color: rgb(96, 96, 237);
+}
+
+.reset {
+    background-color: rgb(243, 72, 72);
+}
+
+.confirm {
+    background-color: rgb(34, 157, 34);
+}
+
+.buttons-ship1, .buttons-ship2 {
+  display: grid; 
+  grid-template-columns: 0.8fr 1fr 1fr; 
+  grid-template-rows: 1fr 1fr 1fr;
+  gap: 0px 0px; 
+}
+.buttons { grid-area: 1 / 1 / 4 / 2; }
+.unplaced-ships { grid-area: 1 / 2 / 4 / 4; }
+
+.unplaced-ships {
+    border: 1px solid black;
+    width: 100%;
 }
