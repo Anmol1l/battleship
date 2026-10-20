@@ -2,6 +2,8 @@ export function monitorAttacks(player, boardNum) {
     const squares = document.querySelectorAll(`.board${boardNum} > .square`);
     squares.forEach(square => {
         square.addEventListener('click', () => {
+            if(square.classList.contains('hit'))
+                return;
             const cordsData = square.dataset.cords;
             const cord = cordsData.split(",");
             player.board.receiveAttack(cord[0],cord[1]);

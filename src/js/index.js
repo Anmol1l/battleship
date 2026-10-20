@@ -1,5 +1,5 @@
 import "../css/style.css";
-import { renderBoard } from "./render.js";
+import { renderBoard, renderUnplacedShips } from "./render.js";
 import { Ship } from "./ship.js";
 import { Player } from "./player.js";
 import { monitorAttacks } from "./dom.js";
@@ -43,3 +43,9 @@ monitorAttacks(p2, 2);
 
 window.p1 = p1;
 window.p2 = p2;
+
+const shipArea1 = document.querySelector(".buttons-ship1 > .unplaced-ships");
+renderUnplacedShips(shipArea1);
+
+const shipArea2 = document.querySelector(".buttons-ship2 > .unplaced-ships");
+renderUnplacedShips(shipArea2);
