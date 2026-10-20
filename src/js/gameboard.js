@@ -4,7 +4,7 @@ function isValidIndex(row, col) {
     return row >= 0 && row <= 9 && col >= 0 && col <= 9;
 }
 
-export function findValidBoardCoords(row, col, length) {
+function findValidBoardCoords(row, col, length) {
     let cordArray = [];
     if (isValidIndex(row, col + (length - 1))) {
         for (let i = 0; i < length; i++) {
@@ -72,6 +72,8 @@ export function Gameboard() {
     }
 
     return {
+        rows,
+        cols,
         placeShip,
         getBoard,
         receiveAttack,
