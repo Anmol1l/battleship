@@ -1,8 +1,8 @@
 import "../css/style.css";
-import { Gameboard } from "./gameboard.js";
 import { renderBoard } from "./render.js";
 import { Ship } from "./ship.js";
 import { Player } from "./player.js";
+import { monitorAttacks } from "./dom.js";
 
 const boardCanvas1 = document.querySelector(".board1");
 let p1 = Player();
@@ -35,6 +35,7 @@ p2.board.placeShip(9,7,s10);
 
 renderBoard(p1.board, boardCanvas1);
 renderBoard(p2.board, boardCanvas2);
+monitorAttacks(p1);
 
 window.p1 = p1;
 window.p2 = p2;

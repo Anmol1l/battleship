@@ -52,3 +52,14 @@ main > section {
 .ship {
     background-color: pink;
 }
+
+.success {
+    background-color: red;
+}
+
+.miss {
+    background-image: url(../images-and-icons/miss.svg);
+    background-repeat: no-repeat;
+    background-size: 50px;
+    background-position: center;
+}
