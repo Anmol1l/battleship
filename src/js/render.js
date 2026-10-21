@@ -17,6 +17,8 @@ export function renderBoard(board, canvas) {
 function renderShip(ship, canvas) {
     const shipBody = document.createElement("div");
     shipBody.classList.add("unplace-ship");
+    shipBody.dataset.length = `${ship.getLength()}`
+    shipBody.draggable = true;
 
     for (let i = 0; i < ship.getLength(); i++) {
         const hitBox = document.createElement("span");

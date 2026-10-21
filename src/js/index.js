@@ -2,7 +2,7 @@ import "../css/style.css";
 import { renderBoard, renderUnplacedShips } from "./render.js";
 import { Ship } from "./ship.js";
 import { Player } from "./player.js";
-import { monitorAttacks } from "./dom.js";
+import { monitorAttacks, highlightOnBoard, selectShipsAndHighlight } from "./dom.js";
 
 const boardCanvas1 = document.querySelector(".board1");
 let p1 = Player("player1");
@@ -38,6 +38,7 @@ p2.board.placeShip(9,7,s10);
 
 renderBoard(p1.board, boardCanvas1);
 renderBoard(p2.board, boardCanvas2);
+
 monitorAttacks(p1, 1);
 monitorAttacks(p2, 2);
 
@@ -49,3 +50,6 @@ renderUnplacedShips(shipArea1);
 
 const shipArea2 = document.querySelector(".buttons-ship2 > .unplaced-ships");
 renderUnplacedShips(shipArea2);
+
+selectShipsAndHighlight(1);
+selectShipsAndHighlight(2);

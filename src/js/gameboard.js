@@ -1,10 +1,8 @@
-import { Ship } from "./ship.js";
-
 function isValidIndex(row, col) {
     return row >= 0 && row <= 9 && col >= 0 && col <= 9;
 }
 
-function findValidBoardCoords(row, col, length) {
+export function findValidBoardCoords(row, col, length) {
     let cordArray = [];
     if (isValidIndex(row, col + (length - 1))) {
         for (let i = 0; i < length; i++) {
@@ -17,8 +15,6 @@ function findValidBoardCoords(row, col, length) {
     }
     return cordArray;
 }
-
-findValidBoardCoords(9, 9, 1);
 
 export function Gameboard() {
     const rows = 10;
