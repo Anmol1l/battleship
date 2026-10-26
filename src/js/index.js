@@ -1,7 +1,7 @@
 import "../css/style.css";
 import { renderBoard, renderUnplacedShips } from "./render.js";
 import { Player } from "./player.js";
-import { monitorAttacks, handleDragDrop } from "./dom.js";
+import { monitorAttacks, handleDragDrop, rotateButton, randomiseButton } from "./dom.js";
 
 
 let p1 = Player("player1");
@@ -24,3 +24,7 @@ renderUnplacedShips(shipArea2);
 
 handleDragDrop(p1, 1);
 handleDragDrop(p2, 2);
+
+rotateButton()
+randomiseButton(p1, 1);
+randomiseButton(p2, 2);

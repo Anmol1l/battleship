@@ -1,11 +1,16 @@
-import { findValidBoardCoords, toggleVertical } from "./gameboard.js";
+import {
+    findValidBoardCoords,
+    toggleVertical,
+    getRandomCords,
+} from "./gameboard.js";
+
 import { renderBoard, clearBoard } from "./render.js";
 import { Ship } from "./ship.js";
 
 export function monitorAttacks(player, boardNum) {
     const board = document.querySelector(`.board${boardNum}`);
-    board.addEventListener('click', (e) => {
-        if(e.target.matches(".square")) {
+    board.addEventListener("click", (e) => {
+        if (e.target.matches(".square")) {
             if (e.target.classList.contains("hit")) return;
             const cordsData = e.target.dataset.cords;
             const cord = cordsData.split(",");
@@ -18,7 +23,7 @@ export function monitorAttacks(player, boardNum) {
                 alert(`${player.getName()} wins`);
             }
         }
-    })
+    });
 }
 
 function clearHighlights(boardNum) {
@@ -43,9 +48,8 @@ export function handleDragDrop(player, boardNum) {
         });
 
         ship.addEventListener("dragend", (e) => {
-
-            if(e.dataTransfer.dropEffect !== 'none' && dropSuccess) {
-                ship.classList.add('placed')
+            if (e.dataTransfer.dropEffect !== "none" && dropSuccess) {
+                ship.classList.add("placed");
                 ship.draggable = false;
             }
             clearHighlights(boardNum);
@@ -77,10 +81,16 @@ export function handleDragDrop(player, boardNum) {
 
     board.addEventListener("drop", (e) => {
         if (e.target.matches(".square") && !e.target.matches(".ship")) {
-           if(!player.board.placeShip(cordsArray[0][0], cordsArray[0][1], newShip)) {
+            if (
+                !player.board.placeShip(
+                    cordsArray[0][0],
+                    cordsArray[0][1],
+                    newShip,
+                )
+            ) {
                 dropSuccess = false;
                 return;
-           }
+            }
 
             clearBoard(boardNum);
             renderBoard(player.board, boardNum);
@@ -89,20 +99,39 @@ export function handleDragDrop(player, boardNum) {
     });
 }
 
-
-function rotateButton() {
-    const btns = document.querySelectorAll('.rotate');
-    btns.forEach(btn => {
-        btn.addEventListener('click', () => {
+export function rotateButton() {
+    const btns = document.querySelectorAll(".rotate");
+    btns.forEach((btn) => {
+        btn.addEventListener("click", () => {
             const player = btn.dataset.player;
-            const unplaceShipContainer = document.querySelector(`.buttons-ship${player} .unplaced-ships`);
-            const unplaceShips = document.querySelectorAll(`.buttons-ship${player} .unplace-ship`);
-            unplaceShips.forEach(unplaceShip => {
-                unplaceShip.classList.toggle('vertical');
+            const unplaceShipContainer = document.querySelector(
+                `.buttons-ship${player} .unplaced-ships`,
+            );
+            const unplaceShips = document.querySelectorAll(
+                `.buttons-ship${player} .unplace-ship`,
+            );
+            unplaceShips.forEach((unplaceShip) => {
+                unplaceShip.classList.toggle("vertical");
                 toggleVertical();
-            })
-            unplaceShipContainer.classList.toggle('vertical');
-        })
-    })
+            });
+            unplaceShipContainer.classList.toggle("vertical");
+        });
+    });
 }
-rotateButton();
+
+export function randomiseButton(player, boardNum) {
+    const btn = document.querySelector(`.buttons-ship${boardNum} .randomise`);
+    const ships = document.querySelectorAll(
+        `.buttons-ship${boardNum} .unplace-ship`,
+    );
+    btn.addEventListener("click", () => {
+        player.board.reset();
+        getRandomCords(player);
+        clearBoard(boardNum);
+        renderBoard(player.board, boardNum);
+        ships.forEach((ship) => {
+            ship.classList.add("placed");
+            ship.draggable = false;
+        });
+    });
+}

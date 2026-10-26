@@ -1,3 +1,5 @@
+import { Ship } from "./ship.js";
+
 function isValidIndex(row, col) {
     return row >= 0 && row <= 9 && col >= 0 && col <= 9;
 }
@@ -43,9 +45,13 @@ export function findValidBoardCoords(row, col, length) {
 export function Gameboard() {
     const rows = 10;
     const cols = 10;
-    const board = Array.from({ length: rows }, () => Array(cols).fill(0));
+    let board = Array.from({ length: rows }, () => Array(cols).fill(0));
     function getBoard() {
         return board;
+    }
+
+    function reset() {
+        board = Array.from({ length: rows }, () => Array(cols).fill(0));
     }
 
     const shipsPlaced = [];
@@ -100,6 +106,7 @@ export function Gameboard() {
         cols,
         placeShip,
         getBoard,
+        reset,
         receiveAttack,
         getMissedAttacks,
         getHitAttacks,
@@ -107,4 +114,21 @@ export function Gameboard() {
     };
 }
 
-window.Gameboard = Gameboard;
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+export function getRandomCords(player) {
+    const shipLengths = [4, 2, 3, 4, 2];
+    for (const ship of shipLengths) {
+        const vertical = getRandomInt(0,1);
+        if(vertical) toggleVertical();
+        while (true) {
+            let row = getRandomInt(0, 9);
+            let col = getRandomInt(0, 9);
+            let newShip = Ship(ship);
+            if (player.board.placeShip(row, col, newShip)) break;
+        }
+    }
+    findCordsVertical = false;
+}
