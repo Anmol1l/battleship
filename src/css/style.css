@@ -130,3 +130,7 @@ main > section {
     border: 1px solid black;
     background-color: skyblue;
 }
+
+.placed {
+    opacity: 0.5;
+}

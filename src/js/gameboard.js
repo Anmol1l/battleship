@@ -32,10 +32,11 @@ export function Gameboard() {
         for (let cord of cordsArr) {
             
             if(!Number.isInteger(board[cord[0]][cord[1]]))
-                throw new Error('Ship already exist here');
+                return false;
 
             board[cord[0]][cord[1]] = ship;
         }
+        return true
     }
 
     const storeMissedAttacks = [];

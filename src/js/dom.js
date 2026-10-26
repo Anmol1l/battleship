@@ -41,17 +41,22 @@ export function handleDragDrop(player, boardNum) {
             newShip = Ship(length);
         });
 
-        ship.addEventListener('dragend', () => {
-        clearHighlights(boardNum);
-        })
+        ship.addEventListener("dragend", (e) => {
+
+            if(e.dataTransfer.dropEffect !== 'none') {
+                ship.classList.add('placed')
+                ship.draggable = false;
+            }
+            clearHighlights(boardNum);
+        });
     });
 
     let cordsArray;
-    const squares = document.querySelectorAll(`.board${boardNum} > .square`);
-    squares.forEach((square) => {
-        square.addEventListener("dragenter", () => {
+    const board = document.querySelector(`.board${boardNum}`);
+    board.addEventListener("dragenter", (e) => {
+        if (e.target.matches(".square")) {
             clearHighlights(boardNum);
-            const cordsData = square.dataset.cords;
+            const cordsData = e.target.dataset.cords;
             const cord = cordsData.split(",");
             cordsArray = findValidBoardCoords(+cord[0], +cord[1], length);
             for (const cord of cordsArray) {
@@ -61,15 +66,21 @@ export function handleDragDrop(player, boardNum) {
                 );
                 box.style.backgroundColor = "skyblue";
             }
-        });
+        }
+    });
 
-        square.addEventListener('dragover', (e) => {
+    board.addEventListener("dragover", (e) => {
+        if (e.target.matches(".square") && !e.target.matches(".ship"))
             e.preventDefault();
-        })
+    });
 
-        square.addEventListener('drop', () => {
-            player.board.placeShip(cordsArray[0][0], cordsArray[0][1], newShip);
-        })
+    board.addEventListener("drop", (e) => {
+        if (e.target.matches(".square") && !e.target.matches(".ship")) {
+           if(!player.board.placeShip(cordsArray[0][0], cordsArray[0][1], newShip))
+                return;
 
+            clearBoard(boardNum);
+            renderBoard(player.board, boardNum);
+        }
     });
 }
