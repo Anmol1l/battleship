@@ -23,4 +23,4 @@ const shipArea2 = document.querySelector(".buttons-ship2 > .unplaced-ships");
 renderUnplacedShips(shipArea2);
 
 handleDragDrop(p1, 1);
-handleDragDrop(2);
+handleDragDrop(p2, 2);

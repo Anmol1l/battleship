@@ -1,4 +1,4 @@
-import { findValidBoardCoords } from "./gameboard.js";
+import { findValidBoardCoords, toggleVertical } from "./gameboard.js";
 import { renderBoard, clearBoard } from "./render.js";
 import { Ship } from "./ship.js";
 
@@ -34,6 +34,7 @@ export function handleDragDrop(player, boardNum) {
     );
     let length = null;
     let newShip = null;
+    let dropSuccess = true;
 
     ships.forEach((ship) => {
         ship.addEventListener("dragstart", () => {
@@ -43,7 +44,7 @@ export function handleDragDrop(player, boardNum) {
 
         ship.addEventListener("dragend", (e) => {
 
-            if(e.dataTransfer.dropEffect !== 'none') {
+            if(e.dataTransfer.dropEffect !== 'none' && dropSuccess) {
                 ship.classList.add('placed')
                 ship.draggable = false;
             }
@@ -58,7 +59,7 @@ export function handleDragDrop(player, boardNum) {
             clearHighlights(boardNum);
             const cordsData = e.target.dataset.cords;
             const cord = cordsData.split(",");
-            cordsArray = findValidBoardCoords(+cord[0], +cord[1], length);
+            cordsArray = findValidBoardCoords(+cord[0], +cord[1], +length);
             for (const cord of cordsArray) {
                 const data = cord.join(",");
                 const box = document.querySelector(
@@ -76,11 +77,32 @@ export function handleDragDrop(player, boardNum) {
 
     board.addEventListener("drop", (e) => {
         if (e.target.matches(".square") && !e.target.matches(".ship")) {
-           if(!player.board.placeShip(cordsArray[0][0], cordsArray[0][1], newShip))
+           if(!player.board.placeShip(cordsArray[0][0], cordsArray[0][1], newShip)) {
+                dropSuccess = false;
                 return;
+           }
 
             clearBoard(boardNum);
             renderBoard(player.board, boardNum);
+            dropSuccess = true;
         }
     });
 }
+
+
+function rotateButton() {
+    const btns = document.querySelectorAll('.rotate');
+    btns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const player = btn.dataset.player;
+            const unplaceShipContainer = document.querySelector(`.buttons-ship${player} .unplaced-ships`);
+            const unplaceShips = document.querySelectorAll(`.buttons-ship${player} .unplace-ship`);
+            unplaceShips.forEach(unplaceShip => {
+                unplaceShip.classList.toggle('vertical');
+                toggleVertical();
+            })
+            unplaceShipContainer.classList.toggle('vertical');
+        })
+    })
+}
+rotateButton();

@@ -96,11 +96,15 @@ main > section {
     background-color: rgb(34, 157, 34);
 }
 
+.rotate {
+    background-color: rgb(199, 80, 164);
+}
+
 .buttons-ship1, .buttons-ship2 {
-  display: grid; 
-  grid-template-columns: 0.8fr 1fr 1fr; 
+  display: grid;
+  grid-template-columns: 0.8fr 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr;
-  gap: 0px 0px; 
+  gap: 0px 0px;
 }
 .buttons { grid-area: 1 / 1 / 4 / 2; }
 .unplaced-ships { grid-area: 1 / 2 / 4 / 4; }
@@ -115,12 +119,29 @@ main > section {
     gap: 10px;
 }
 
+.unplaced-ships.vertical {
+    border: 2px solid black;
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
 .unplace-ship {
     border: 1px solid black;
     width: fit-content;
     height: fit-content;
     display: flex;
+}
 
+.unplace-ship.vertical {
+    border: 1px solid black;
+    width: fit-content;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
 }
 
 .hitBox {

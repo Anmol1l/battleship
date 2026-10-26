@@ -2,18 +2,42 @@ function isValidIndex(row, col) {
     return row >= 0 && row <= 9 && col >= 0 && col <= 9;
 }
 
-export function findValidBoardCoords(row, col, length) {
+let findCordsVertical = false;
+
+export function toggleVertical() {
+    findCordsVertical = !findCordsVertical;
+}
+
+function findValidBoardCoordsVert(row, col, length) {
     let cordArray = [];
-    if (isValidIndex(row, col + (length - 1))) {
+    if (isValidIndex(row + (length - 1), col)) {
         for (let i = 0; i < length; i++) {
-            cordArray.push([row, col + i]);
+            cordArray.push([row + i, col]);
         }
         return cordArray;
     }
     for (let i = 0; i < length; i++) {
-        cordArray.push([row, col - i]);
+        cordArray.push([row - i, col]);
     }
     return cordArray;
+}
+
+export function findValidBoardCoords(row, col, length) {
+    if (findCordsVertical) {
+        return findValidBoardCoordsVert(row, col, length);
+    } else {
+        let cordArray = [];
+        if (isValidIndex(row, col + (length - 1))) {
+            for (let i = 0; i < length; i++) {
+                cordArray.push([row, col + i]);
+            }
+            return cordArray;
+        }
+        for (let i = 0; i < length; i++) {
+            cordArray.push([row, col - i]);
+        }
+        return cordArray;
+    }
 }
 
 export function Gameboard() {
@@ -28,15 +52,14 @@ export function Gameboard() {
 
     function placeShip(row, col, ship) {
         const cordsArr = findValidBoardCoords(row, col, ship.getLength());
+        for (let cord of cordsArr) {
+            if (!Number.isInteger(board[cord[0]][cord[1]])) return false;
+        }
         shipsPlaced.push(ship);
         for (let cord of cordsArr) {
-            
-            if(!Number.isInteger(board[cord[0]][cord[1]]))
-                return false;
-
             board[cord[0]][cord[1]] = ship;
         }
-        return true
+        return true;
     }
 
     const storeMissedAttacks = [];
