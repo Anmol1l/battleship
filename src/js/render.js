@@ -1,6 +1,7 @@
 import { Ship } from "./ship.js";
 
-export function renderBoard(board, canvas) {
+export function renderBoard(board, boardNum) {
+    const canvas = document.querySelector(`.board${boardNum}`);
     for (let i = 0; i < board.rows; i++) {
         for (let j = 0; j < board.cols; j++) {
             const square = document.createElement("div");
@@ -41,3 +42,8 @@ export function renderUnplacedShips(canvas) {
     renderShip(s4, canvas);
     renderShip(s5, canvas);
 }
+
+export function clearBoard(boardNum) {
+    const board = document.querySelector(`.board${boardNum}`);
+    board.replaceChildren();
+} 

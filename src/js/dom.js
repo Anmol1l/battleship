@@ -1,4 +1,6 @@
 import { findValidBoardCoords } from "./gameboard.js";
+import { renderBoard, clearBoard } from "./render.js";
+import { Ship } from "./ship.js";
 
 export function monitorAttacks(player, boardNum) {
     const squares = document.querySelectorAll(`.board${boardNum} > .square`);
@@ -19,37 +21,39 @@ export function monitorAttacks(player, boardNum) {
     });
 }
 
-function clearAll(boardNum) {
+function clearHighlights(boardNum) {
     const squares = document.querySelectorAll(`.board${boardNum} > .square`);
     squares.forEach((square) => {
         square.style.backgroundColor = "";
     });
 }
 
-export function selectShipsAndHighlight(boardNum) {
+export function handleDragDrop(player, boardNum) {
     const ships = document.querySelectorAll(
         `.buttons-ship${boardNum} .unplace-ship`,
     );
+    let length = null;
+    let newShip = null;
 
     ships.forEach((ship) => {
         ship.addEventListener("dragstart", () => {
-            const length = ship.dataset.length;
-            highlightOnBoard(boardNum, length);
+            length = ship.dataset.length;
+            newShip = Ship(length);
         });
-    });
-}
 
-export function highlightOnBoard(boardNum, length) {
+        ship.addEventListener('dragend', () => {
+        clearHighlights(boardNum);
+        })
+    });
+
+    let cordsArray;
     const squares = document.querySelectorAll(`.board${boardNum} > .square`);
     squares.forEach((square) => {
-        let cordsData;
-        let cordsArray;
         square.addEventListener("dragenter", () => {
-            clearAll(boardNum);
-            cordsData = square.dataset.cords;
+            clearHighlights(boardNum);
+            const cordsData = square.dataset.cords;
             const cord = cordsData.split(",");
             cordsArray = findValidBoardCoords(+cord[0], +cord[1], length);
-
             for (const cord of cordsArray) {
                 const data = cord.join(",");
                 const box = document.querySelector(
@@ -58,14 +62,14 @@ export function highlightOnBoard(boardNum, length) {
                 box.style.backgroundColor = "skyblue";
             }
         });
-    });
 
-    const ships = document.querySelectorAll(
-        `.buttons-ship${boardNum} .unplace-ship`,
-    );
-    ships.forEach((ship) => {
-        ship.addEventListener("dragend", () => {
-            clearAll(boardNum);
-        });
+        square.addEventListener('dragover', (e) => {
+            e.preventDefault();
+        })
+
+        square.addEventListener('drop', () => {
+            player.board.placeShip(cordsArray[0][0], cordsArray[0][1], newShip);
+        })
+
     });
 }

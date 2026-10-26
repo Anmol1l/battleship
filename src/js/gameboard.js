@@ -32,7 +32,7 @@ export function Gameboard() {
         for (let cord of cordsArr) {
             
             if(!Number.isInteger(board[cord[0]][cord[1]]))
-                throw new Error('Choose different Coords');
+                throw new Error('Ship already exist here');
 
             board[cord[0]][cord[1]] = ship;
         }
