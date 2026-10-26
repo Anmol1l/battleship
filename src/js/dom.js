@@ -3,22 +3,22 @@ import { renderBoard, clearBoard } from "./render.js";
 import { Ship } from "./ship.js";
 
 export function monitorAttacks(player, boardNum) {
-    const squares = document.querySelectorAll(`.board${boardNum} > .square`);
-    squares.forEach((square) => {
-        square.addEventListener("click", () => {
-            if (square.classList.contains("hit")) return;
-            const cordsData = square.dataset.cords;
+    const board = document.querySelector(`.board${boardNum}`);
+    board.addEventListener('click', (e) => {
+        if(e.target.matches(".square")) {
+            if (e.target.classList.contains("hit")) return;
+            const cordsData = e.target.dataset.cords;
             const cord = cordsData.split(",");
             player.board.receiveAttack(cord[0], cord[1]);
             if (player.board.getBoard()[cord[0]][cord[1]] === 0)
-                square.classList.add("miss", "hit");
-            else square.classList.add("success", "hit");
+                e.target.classList.add("miss", "hit");
+            else e.target.classList.add("success", "hit");
 
             if (player.checkWin()) {
                 alert(`${player.getName()} wins`);
             }
-        });
-    });
+        }
+    })
 }
 
 function clearHighlights(boardNum) {
@@ -38,7 +38,7 @@ export function handleDragDrop(player, boardNum) {
     ships.forEach((ship) => {
         ship.addEventListener("dragstart", () => {
             length = ship.dataset.length;
-            newShip = Ship(length);
+            newShip = Ship(+length);
         });
 
         ship.addEventListener("dragend", (e) => {
