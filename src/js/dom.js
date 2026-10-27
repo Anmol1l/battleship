@@ -6,6 +6,7 @@ import {
 
 import { renderBoard, clearBoard } from "./render.js";
 import { Ship } from "./ship.js";
+import { placeShipsComputer } from "./computer.js"
 
 function monitorAttacks(player, boardNum) {
     const board = document.querySelector(`.board${boardNum}`);
@@ -195,6 +196,8 @@ export function confirmAndStart(player, boardNum) {
             btn.disabled = true;
         });
         monitorAttacks(player, boardNum)
+        if(player.isComputer())
+            placeShipsComputer();
     });
 }
 
