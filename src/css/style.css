@@ -160,6 +160,9 @@ main > section {
     border: 1px solid black;
     background-color: skyblue;
 }
+.hitBox.hit {
+    background-color: red;
+}
 
 .placed {
     opacity: 0.5;

@@ -7,23 +7,49 @@ import {
 import { renderBoard, clearBoard } from "./render.js";
 import { Ship } from "./ship.js";
 
-export function monitorAttacks(player, boardNum) {
+function monitorAttacks(player, boardNum) {
     const board = document.querySelector(`.board${boardNum}`);
     board.addEventListener("click", (e) => {
         if (e.target.matches(".square")) {
             if (e.target.classList.contains("hit")) return;
             const cordsData = e.target.dataset.cords;
             const cord = cordsData.split(",");
-            player.board.receiveAttack(cord[0], cord[1]);
+            let ship = player.board.receiveAttack(cord[0], cord[1]);
             if (player.board.getBoard()[cord[0]][cord[1]] === 0)
                 e.target.classList.add("miss", "hit");
-            else e.target.classList.add("success", "hit");
+            else {
+                e.target.classList.add("success", "hit");
+                highlightHitShip(ship, boardNum);
+            }
 
             if (player.checkWin()) {
                 alert(`${player.getName()} wins`);
             }
         }
     });
+}
+
+function highlightHitShip(ship, boardNum) {
+    if (ship) {
+        let length = ship.getLength();
+        const unplacedShip = document.querySelector(
+            `.buttons-ship${boardNum} .unplace-ship:not(.destroyed)[data-length="${length}"]`,
+        );
+
+        if (
+            +unplacedShip.dataset.length === length &&
+            !unplacedShip.classList.contains("destroyed")
+        ) {
+            const hitbox = unplacedShip.querySelector("span:not(.hit)");
+            hitbox.classList.add("hit");
+        }
+
+        const hitBoxes = unplacedShip.querySelectorAll('.hit')
+        if(hitBoxes.length === length){
+            unplacedShip.classList.add('destroyed');
+        }
+
+    }
 }
 
 function clearHighlights(boardNum) {
@@ -134,6 +160,7 @@ export function randomiseButton(player, boardNum) {
             ship.classList.add("placed");
             ship.draggable = false;
         });
+        enableConfirmButton(boardNum)
     });
 }
 
@@ -150,10 +177,11 @@ export function resetButton(player, boardNum) {
             ship.classList.remove("placed");
             ship.draggable = true;
         });
+        enableConfirmButton(boardNum)
     });
 }
 
-export function confirmButton(boardNum) {
+export function confirmAndStart(player, boardNum) {
     const btn = document.querySelector(`.buttons-ship${boardNum} .confirm`);
     btn.addEventListener("click", () => {
         const placedShips = document.querySelectorAll(
@@ -163,17 +191,20 @@ export function confirmButton(boardNum) {
             ship.classList.add("hide");
         });
         const btns = document.querySelectorAll(`.buttons-ship${boardNum} .btn`);
-        btns.forEach(btn => {
+        btns.forEach((btn) => {
             btn.disabled = true;
-        })
+        });
+        monitorAttacks(player, boardNum)
     });
 }
 
 // enable confirm button if all ships placed
 function enableConfirmButton(boardNum) {
     const ships = document.querySelectorAll(`.buttons-ship${boardNum} .placed`);
-    if (ships.length === 4) {
-        const btn = document.querySelector(`.buttons-ship${boardNum} .confirm`);
+    const btn = document.querySelector(`.buttons-ship${boardNum} .confirm`);
+    if (ships.length >= 4) {
         btn.disabled = false;
+    } else {
+        btn.disabled = true;
     }
 }

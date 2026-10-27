@@ -89,8 +89,10 @@ export function Gameboard() {
             let ship = board[row][col];
             ship.hit();
             storeHitAttacks.push(`${row},${col}`);
+            return ship;
         } else {
             storeMissedAttacks.push(`${row},${col}`);
+            return null;
         }
     }
 
