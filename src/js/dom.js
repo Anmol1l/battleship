@@ -95,6 +95,7 @@ export function handleDragDrop(player, boardNum) {
             clearBoard(boardNum);
             renderBoard(player.board, boardNum);
             dropSuccess = true;
+            enableConfirmButton(boardNum);
         }
     });
 }
@@ -154,10 +155,25 @@ export function resetButton(player, boardNum) {
 
 export function confirmButton(boardNum) {
     const btn = document.querySelector(`.buttons-ship${boardNum} .confirm`);
-    btn.addEventListener('click', () => {
-        const placedShips = document.querySelectorAll(`.board${boardNum} > .ship`);
-        placedShips.forEach(ship => {
-            ship.classList.add('hide');
+    btn.addEventListener("click", () => {
+        const placedShips = document.querySelectorAll(
+            `.board${boardNum} > .ship`,
+        );
+        placedShips.forEach((ship) => {
+            ship.classList.add("hide");
+        });
+        const btns = document.querySelectorAll(`.buttons-ship${boardNum} .btn`);
+        btns.forEach(btn => {
+            btn.disabled = true;
         })
-    })
+    });
+}
+
+// enable confirm button if all ships placed
+function enableConfirmButton(boardNum) {
+    const ships = document.querySelectorAll(`.buttons-ship${boardNum} .placed`);
+    if (ships.length === 4) {
+        const btn = document.querySelector(`.buttons-ship${boardNum} .confirm`);
+        btn.disabled = false;
+    }
 }
