@@ -46,14 +46,18 @@ main > section {
 }
 
 .ship {
-    background-color: pink;
+    background-color: skyblue;
 }
 
-.success {
+.ship.hide{
+    background-color: peachpuff;
+}
+
+.ship.success {
     background-color: red;
 }
 
-.miss {
+.square.miss {
     background-image: url(../images-and-icons/miss.svg);
     background-repeat: no-repeat;
     background-size: 50px;
@@ -64,7 +68,6 @@ main > section {
     height: 250px;
     width: 502px;
     place-self: center;
-    /* border: 2px solid black; */
     margin-top: 20px;
 }
 

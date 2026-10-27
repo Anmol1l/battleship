@@ -135,3 +135,29 @@ export function randomiseButton(player, boardNum) {
         });
     });
 }
+
+export function resetButton(player, boardNum) {
+    const btn = document.querySelector(`.buttons-ship${boardNum} .reset`);
+    const ships = document.querySelectorAll(
+        `.buttons-ship${boardNum} .unplace-ship`,
+    );
+    btn.addEventListener("click", () => {
+        player.board.reset();
+        clearBoard(boardNum);
+        renderBoard(player.board, boardNum);
+        ships.forEach((ship) => {
+            ship.classList.remove("placed");
+            ship.draggable = true;
+        });
+    });
+}
+
+export function confirmButton(boardNum) {
+    const btn = document.querySelector(`.buttons-ship${boardNum} .confirm`);
+    btn.addEventListener('click', () => {
+        const placedShips = document.querySelectorAll(`.board${boardNum} > .ship`);
+        placedShips.forEach(ship => {
+            ship.classList.add('hide');
+        })
+    })
+}
