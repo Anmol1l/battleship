@@ -6,7 +6,8 @@ import {
 
 import { renderBoard, clearBoard } from "./render.js";
 import { Ship } from "./ship.js";
-import { placeShipsComputer } from "./computer.js"
+import { placeShipsComputer, attackComputer } from "./computer.js"
+import { p2 } from "./index.js";
 
 function monitorAttacks(player, boardNum) {
     const board = document.querySelector(`.board${boardNum}`);
@@ -27,10 +28,12 @@ function monitorAttacks(player, boardNum) {
                 alert(`${player.getName()} wins`);
             }
         }
+        if(p2.isComputer())
+            attackComputer(p2);
     });
 }
 
-function highlightHitShip(ship, boardNum) {
+export function highlightHitShip(ship, boardNum) {
     if (ship) {
         let length = ship.getLength();
         const unplacedShip = document.querySelector(
@@ -196,7 +199,7 @@ export function confirmAndStart(player, boardNum) {
             btn.disabled = true;
         });
         monitorAttacks(player, boardNum)
-        if(player.isComputer())
+        if(p2.isComputer())
             placeShipsComputer();
     });
 }

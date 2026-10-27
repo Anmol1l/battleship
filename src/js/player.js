@@ -1,8 +1,8 @@
 import { Gameboard } from "./gameboard.js";
 
-export function Player(name) {
+export function Player(name, ai = false) {
     const playerName = name;
-    const computer = true;
+    const computer = ai;
     let board = Gameboard();
     function getName() {
         return playerName;

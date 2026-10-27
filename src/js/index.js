@@ -10,7 +10,7 @@ import {
 } from "./dom.js";
 
 let p1 = Player("player1");
-let p2 = Player("player2");
+export let p2 = Player("player2", true);
 
 renderBoard(p1.board, 1);
 renderBoard(p2.board, 2);
