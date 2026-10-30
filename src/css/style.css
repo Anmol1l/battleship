@@ -167,3 +167,7 @@ main > section {
 .placed {
     opacity: 0.5;
 }
+
+.restricted {
+    background-color: rgba(235, 71, 71, 0.343);
+}

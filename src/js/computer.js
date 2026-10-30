@@ -29,7 +29,7 @@ export function getAttackCords() {
 }
 
 export function attackComputer(player) {
-    const board = document.querySelector(".board2");
+    const board = document.querySelector(".board1");
     const attackCord = getAttackCords();
     const square = board.querySelector(
         `.square[data-cords="${attackCord[0]},${attackCord[1]}"]`,
@@ -40,7 +40,7 @@ export function attackComputer(player) {
         square.classList.add("miss", "hit");
     else {
         square.classList.add("success", "hit");
-        highlightHitShip(ship, 2);
+        highlightHitShip(ship, 1);
     }
 
     if (player.checkWin()) {

@@ -9,7 +9,7 @@ import {
     confirmAndStart,
 } from "./dom.js";
 
-let p1 = Player("player1");
+export let p1 = Player("player1");
 export let p2 = Player("player2", true);
 
 renderBoard(p1.board, 1);
@@ -18,11 +18,8 @@ renderBoard(p2.board, 2);
 window.p1 = p1;
 window.p2 = p2;
 
-const shipArea1 = document.querySelector(".buttons-ship1 > .unplaced-ships");
-renderUnplacedShips(shipArea1);
-
-const shipArea2 = document.querySelector(".buttons-ship2 > .unplaced-ships");
-renderUnplacedShips(shipArea2);
+renderUnplacedShips(1);
+renderUnplacedShips(2);
 
 handleDragDrop(p1, 1);
 handleDragDrop(p2, 2);

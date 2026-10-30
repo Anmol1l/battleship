@@ -7,7 +7,7 @@ import {
 import { renderBoard, clearBoard } from "./render.js";
 import { Ship } from "./ship.js";
 import { placeShipsComputer, attackComputer } from "./computer.js"
-import { p2 } from "./index.js";
+import { p2, p1 } from "./index.js";
 
 function monitorAttacks(player, boardNum) {
     const board = document.querySelector(`.board${boardNum}`);
@@ -29,7 +29,7 @@ function monitorAttacks(player, boardNum) {
             }
         }
         if(p2.isComputer())
-            attackComputer(p2);
+            attackComputer(p1);
     });
 }
 
@@ -63,17 +63,21 @@ function clearHighlights(boardNum) {
     });
 }
 
+let shipPlayer = null;
+let boardPlayer = null;
+let dropSuccess = true;
+
 export function handleDragDrop(player, boardNum) {
     const ships = document.querySelectorAll(
         `.buttons-ship${boardNum} .unplace-ship`,
     );
     let length = null;
     let newShip = null;
-    let dropSuccess = true;
 
     ships.forEach((ship) => {
         ship.addEventListener("dragstart", () => {
             length = ship.dataset.length;
+            shipPlayer = ship.dataset.player;
             newShip = Ship(+length);
         });
 
@@ -89,6 +93,10 @@ export function handleDragDrop(player, boardNum) {
     let cordsArray;
     const board = document.querySelector(`.board${boardNum}`);
     board.addEventListener("dragenter", (e) => {
+        boardPlayer = board.dataset.player;
+        if(shipPlayer !== boardPlayer) {
+            board.classList.add('restricted')
+        }
         if (e.target.matches(".square")) {
             clearHighlights(boardNum);
             const cordsData = e.target.dataset.cords;
@@ -104,6 +112,12 @@ export function handleDragDrop(player, boardNum) {
         }
     });
 
+    board.addEventListener("dragleave", (e) => {
+    if (!board.contains(e.relatedTarget)) {
+        board.classList.remove('restricted')
+    }
+});
+
     board.addEventListener("dragover", (e) => {
         if (e.target.matches(".square") && !e.target.matches(".ship"))
             e.preventDefault();
@@ -111,6 +125,14 @@ export function handleDragDrop(player, boardNum) {
 
     board.addEventListener("drop", (e) => {
         if (e.target.matches(".square") && !e.target.matches(".ship")) {
+
+            if(shipPlayer !== boardPlayer) {
+                dropSuccess = false;
+                board.classList.remove('restricted')
+                clearHighlights(boardNum)
+                return;
+            }
+
             if (
                 !player.board.placeShip(
                     cordsArray[0][0],

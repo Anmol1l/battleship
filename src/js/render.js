@@ -15,10 +15,12 @@ export function renderBoard(board, boardNum) {
     }
 }
 
-function renderShip(ship, canvas) {
+function renderShip(ship, boardNum) {
+    const canvas = document.querySelector(`.buttons-ship${boardNum} > .unplaced-ships`);
     const shipBody = document.createElement("div");
     shipBody.classList.add("unplace-ship");
     shipBody.dataset.length = `${ship.getLength()}`
+    shipBody.dataset.player = boardNum;
     shipBody.draggable = true;
 
     for (let i = 0; i < ship.getLength(); i++) {
@@ -29,18 +31,18 @@ function renderShip(ship, canvas) {
     canvas.appendChild(shipBody);
 }
 
-export function renderUnplacedShips(canvas) {
+export function renderUnplacedShips(boardNum) {
     let s1 = Ship(4);
     let s2 = Ship(2);
     let s3 = Ship(3);
     let s4 = Ship(4);
     let s5 = Ship(2);
 
-    renderShip(s1, canvas);
-    renderShip(s2, canvas);
-    renderShip(s3, canvas);
-    renderShip(s4, canvas);
-    renderShip(s5, canvas);
+    renderShip(s1, boardNum);
+    renderShip(s2, boardNum);
+    renderShip(s3, boardNum);
+    renderShip(s4, boardNum);
+    renderShip(s5, boardNum);
 }
 
 export function clearBoard(boardNum) {
