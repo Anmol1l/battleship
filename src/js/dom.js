@@ -6,30 +6,32 @@ import {
 
 import { renderBoard, clearBoard } from "./render.js";
 import { Ship } from "./ship.js";
-import { placeShipsComputer, attackComputer } from "./computer.js"
-import { p2, p1 } from "./index.js";
+import { placeShipsComputer, attackComputer } from "./computer.js";
+import { p2, p1, check } from "./index.js";
 
-function monitorAttacks(player, boardNum) {
-    const board = document.querySelector(`.board${boardNum}`);
-    board.addEventListener("click", (e) => {
-        if (e.target.matches(".square")) {
-            if (e.target.classList.contains("hit")) return;
-            const cordsData = e.target.dataset.cords;
-            const cord = cordsData.split(",");
-            let ship = player.board.receiveAttack(cord[0], cord[1]);
-            if (player.board.getBoard()[cord[0]][cord[1]] === 0)
-                e.target.classList.add("miss", "hit");
-            else {
-                e.target.classList.add("success", "hit");
-                highlightHitShip(ship, boardNum);
-            }
+export function monitorAttacks(player, boardNum) {
+    return new Promise((resolve) => {
+        const board = document.querySelector(`.board${boardNum}`);
+        board.addEventListener("click", function handler(e) {
+            if (e.target.matches(".square")) {
+                if (e.target.classList.contains("hit")) return;
+                const cordsData = e.target.dataset.cords;
+                const cord = cordsData.split(",");
+                let ship = player.board.receiveAttack(cord[0], cord[1]);
+                if (player.board.getBoard()[cord[0]][cord[1]] === 0)
+                    e.target.classList.add("miss", "hit");
+                else {
+                    e.target.classList.add("success", "hit");
+                    highlightHitShip(ship, boardNum);
+                }
 
-            if (player.checkWin()) {
-                alert(`${player.getName()} wins`);
+                if (player.checkWin()) {
+                    alert(`${player.getName()} wins`);
+                }
             }
-        }
-        if(p2.isComputer())
-            attackComputer(p1);
+            board.removeEventListener('click', handler);
+            resolve(true);
+        });
     });
 }
 
@@ -48,11 +50,10 @@ export function highlightHitShip(ship, boardNum) {
             hitbox.classList.add("hit");
         }
 
-        const hitBoxes = unplacedShip.querySelectorAll('.hit')
-        if(hitBoxes.length === length){
-            unplacedShip.classList.add('destroyed');
+        const hitBoxes = unplacedShip.querySelectorAll(".hit");
+        if (hitBoxes.length === length) {
+            unplacedShip.classList.add("destroyed");
         }
-
     }
 }
 
@@ -94,8 +95,8 @@ export function handleDragDrop(player, boardNum) {
     const board = document.querySelector(`.board${boardNum}`);
     board.addEventListener("dragenter", (e) => {
         boardPlayer = board.dataset.player;
-        if(shipPlayer !== boardPlayer) {
-            board.classList.add('restricted')
+        if (shipPlayer !== boardPlayer) {
+            board.classList.add("restricted");
         }
         if (e.target.matches(".square")) {
             clearHighlights(boardNum);
@@ -113,10 +114,10 @@ export function handleDragDrop(player, boardNum) {
     });
 
     board.addEventListener("dragleave", (e) => {
-    if (!board.contains(e.relatedTarget)) {
-        board.classList.remove('restricted')
-    }
-});
+        if (!board.contains(e.relatedTarget)) {
+            board.classList.remove("restricted");
+        }
+    });
 
     board.addEventListener("dragover", (e) => {
         if (e.target.matches(".square") && !e.target.matches(".ship"))
@@ -125,11 +126,10 @@ export function handleDragDrop(player, boardNum) {
 
     board.addEventListener("drop", (e) => {
         if (e.target.matches(".square") && !e.target.matches(".ship")) {
-
-            if(shipPlayer !== boardPlayer) {
+            if (shipPlayer !== boardPlayer) {
                 dropSuccess = false;
-                board.classList.remove('restricted')
-                clearHighlights(boardNum)
+                board.classList.remove("restricted");
+                clearHighlights(boardNum);
                 return;
             }
 
@@ -186,7 +186,7 @@ export function randomiseButton(player, boardNum) {
             ship.classList.add("placed");
             ship.draggable = false;
         });
-        enableConfirmButton(boardNum)
+        enableConfirmButton(boardNum);
     });
 }
 
@@ -203,11 +203,12 @@ export function resetButton(player, boardNum) {
             ship.classList.remove("placed");
             ship.draggable = true;
         });
-        enableConfirmButton(boardNum)
+        enableConfirmButton(boardNum);
     });
 }
 
-export function confirmAndStart(player, boardNum) {
+export function confirmAndStart(boardNum) {
+    return new Promise((resolve) => {
     const btn = document.querySelector(`.buttons-ship${boardNum} .confirm`);
     btn.addEventListener("click", () => {
         const placedShips = document.querySelectorAll(
@@ -220,10 +221,11 @@ export function confirmAndStart(player, boardNum) {
         btns.forEach((btn) => {
             btn.disabled = true;
         });
-        monitorAttacks(player, boardNum)
-        if(p2.isComputer())
-            placeShipsComputer();
+        if (p2.isComputer()) placeShipsComputer();
+        resolve (true);
+        check();
     });
+    })
 }
 
 // enable confirm button if all ships placed

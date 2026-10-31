@@ -7,10 +7,11 @@ import {
     randomiseButton,
     resetButton,
     confirmAndStart,
+    monitorAttacks,
 } from "./dom.js";
 
 export let p1 = Player("player1");
-export let p2 = Player("player2", true);
+export let p2 = Player("player2");
 
 renderBoard(p1.board, 1);
 renderBoard(p2.board, 2);
@@ -30,5 +31,33 @@ randomiseButton(p2, 2);
 resetButton(p1, 1);
 resetButton(p2, 2);
 
-confirmAndStart(p1, 1);
-confirmAndStart(p2, 2);
+export async function check() {
+    const results = await Promise.all([
+        confirmAndStart(1),
+        confirmAndStart(2),
+    ]);
+    if (results.every(Boolean)) {
+        startGame();
+    }
+}
+check();
+
+export async function startGame() {
+    let p1Turn = true;
+    let p2Turn = false;
+    const board1 = document.querySelector(".board1");
+    const board2 = document.querySelector(".board2");
+    while (!p1.checkWin() && !p2.checkWin()) {
+        if (p1Turn) {
+            board1.classList.add("higlight-turn");
+            p2Turn = await monitorAttacks(p1, 1);
+            p1Turn = false;
+            board1.classList.remove("higlight-turn");
+        } else if (p2Turn) {
+            board2.classList.add("higlight-turn");
+            p1Turn = await monitorAttacks(p2, 2);
+            p2Turn = false;
+            board2.classList.remove("higlight-turn");
+        }
+    }
+}

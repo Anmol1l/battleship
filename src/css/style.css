@@ -169,5 +169,13 @@ main > section {
 }
 
 .restricted {
-    background-color: rgba(235, 71, 71, 0.343);
+    background-image: url(../images-and-icons/restrict.svg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 400px;
+    background-color: rgba(228, 111, 111, 0.322);
+}
+
+.higlight-turn {
+    border: 3px solid rgb(49, 41, 204);
 }
