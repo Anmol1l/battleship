@@ -29,21 +29,24 @@ export function getAttackCords() {
 }
 
 export function attackComputer(player) {
-    const board = document.querySelector(".board1");
-    const attackCord = getAttackCords();
-    const square = board.querySelector(
-        `.square[data-cords="${attackCord[0]},${attackCord[1]}"]`,
-    );
+    return new Promise((resolve) => {
+        const board = document.querySelector(".board1");
+        const attackCord = getAttackCords();
+        const square = board.querySelector(
+            `.square[data-cords="${attackCord[0]},${attackCord[1]}"]`,
+        );
 
-    let ship = player.board.receiveAttack(attackCord[0], attackCord[1]);
-    if (player.board.getBoard()[attackCord[0]][attackCord[1]] === 0)
-        square.classList.add("miss", "hit");
-    else {
-        square.classList.add("success", "hit");
-        highlightHitShip(ship, 1);
-    }
-
-    if (player.checkWin()) {
-        alert(`${player.getName()} wins`);
-    }
+        let ship = player.board.receiveAttack(attackCord[0], attackCord[1]);
+        if (player.board.getBoard()[attackCord[0]][attackCord[1]] === 0) {
+            square.classList.add("miss", "hit");
+            resolve("miss");
+        } else {
+            square.classList.add("success", "hit");
+            highlightHitShip(ship, 1);
+            resolve("success");
+        }
+        if (player.checkWin()) {
+            alert(`${player.getName()} wins`);
+        }
+    });
 }

@@ -18,19 +18,20 @@ export function monitorAttacks(player, boardNum) {
                 const cordsData = e.target.dataset.cords;
                 const cord = cordsData.split(",");
                 let ship = player.board.receiveAttack(cord[0], cord[1]);
-                if (player.board.getBoard()[cord[0]][cord[1]] === 0)
+                if (player.board.getBoard()[cord[0]][cord[1]] === 0) {
                     e.target.classList.add("miss", "hit");
-                else {
+                    resolve('miss');
+                } else {
                     e.target.classList.add("success", "hit");
                     highlightHitShip(ship, boardNum);
+                    resolve('success');
                 }
 
                 if (player.checkWin()) {
                     alert(`${player.getName()} wins`);
                 }
             }
-            board.removeEventListener('click', handler);
-            resolve(true);
+            board.removeEventListener("click", handler);
         });
     });
 }
@@ -209,23 +210,25 @@ export function resetButton(player, boardNum) {
 
 export function confirmAndStart(boardNum) {
     return new Promise((resolve) => {
-    const btn = document.querySelector(`.buttons-ship${boardNum} .confirm`);
-    btn.addEventListener("click", () => {
-        const placedShips = document.querySelectorAll(
-            `.board${boardNum} > .ship`,
-        );
-        placedShips.forEach((ship) => {
-            ship.classList.add("hide");
+        const btn = document.querySelector(`.buttons-ship${boardNum} .confirm`);
+        btn.addEventListener("click", () => {
+            const placedShips = document.querySelectorAll(
+                `.board${boardNum} > .ship`,
+            );
+            placedShips.forEach((ship) => {
+                ship.classList.add("hide");
+            });
+            const btns = document.querySelectorAll(
+                `.buttons-ship${boardNum} .btn`,
+            );
+            btns.forEach((btn) => {
+                btn.disabled = true;
+            });
+            if (p2.isComputer()) placeShipsComputer();
+            resolve(true);
+            check();
         });
-        const btns = document.querySelectorAll(`.buttons-ship${boardNum} .btn`);
-        btns.forEach((btn) => {
-            btn.disabled = true;
-        });
-        if (p2.isComputer()) placeShipsComputer();
-        resolve (true);
-        check();
     });
-    })
 }
 
 // enable confirm button if all ships placed
