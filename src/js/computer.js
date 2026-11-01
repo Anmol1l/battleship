@@ -95,12 +95,8 @@ export function attackComputer(player) {
             square.classList.add("success", "hit");
             highlightHitShip(ship, 1);
             cordsArray = [[attackCord[0], attackCord[1]]];
-            // getNearestCordsOnHit();
             successHit = true;
             resolve("success");
-        }
-        if (player.checkWin()) {
-            alert(`${player.getName()} wins`);
         }
     });
 }

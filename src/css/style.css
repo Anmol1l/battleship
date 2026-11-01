@@ -49,7 +49,7 @@ main > section {
     background-color: skyblue;
 }
 
-.ship.hide{
+.ship.hide {
     background-color: peachpuff;
 }
 
@@ -64,7 +64,8 @@ main > section {
     background-position: center;
 }
 
-.buttons-ship1, .buttons-ship2 {
+.buttons-ship1,
+.buttons-ship2 {
     height: 250px;
     width: 502px;
     place-self: center;
@@ -108,15 +109,19 @@ main > section {
     cursor: not-allowed;
 }
 
-
-.buttons-ship1, .buttons-ship2 {
-  display: grid;
-  grid-template-columns: 0.8fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr;
-  gap: 0px 0px;
+.buttons-ship1,
+.buttons-ship2 {
+    display: grid;
+    grid-template-columns: 0.8fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    gap: 0px 0px;
 }
-.buttons { grid-area: 1 / 1 / 4 / 2; }
-.unplaced-ships { grid-area: 1 / 2 / 4 / 4; }
+.buttons {
+    grid-area: 1 / 1 / 4 / 2;
+}
+.unplaced-ships {
+    grid-area: 1 / 2 / 4 / 4;
+}
 
 .unplaced-ships {
     border: 2px solid black;
@@ -178,4 +183,36 @@ main > section {
 
 .higlight-turn {
     border: 3px solid rgb(49, 41, 204);
+}
+
+#startDialog[open] {
+    position: fixed;
+    inset: 0;
+    margin: auto;
+    background-color: rgb(255, 214, 185);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#startDialog::backdrop {
+    background-color: rgba(0, 0, 0, 0.834);
+    backdrop-filter: blur(5px);
+}
+
+#startDialog button{
+    background-color: rgb(77, 201, 77);
+    border: none;
+    width: 300px;
+    height: 50px;
+    color: white;
+    font-size: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#startDialog button img {
+    height: 40px;
+    width: 40px;
 }

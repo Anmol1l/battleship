@@ -12,26 +12,36 @@ import {
 
 import { attackComputer } from "./computer.js";
 
-export let p1 = Player("player1");
-export let p2 = Player("player2", true);
+export let p1;
+export let p2;
 
-renderBoard(p1.board, 1);
-renderBoard(p2.board, 2);
+const vsPlayerBtn = document.querySelector(".vsPlayer");
+const dialog = document.querySelector("#startDialog");
+const vsComputerBtn = document.querySelector(".vsCom");
 
-window.p1 = p1;
-window.p2 = p2;
+dialog.showModal();
 
-renderUnplacedShips(1);
-renderUnplacedShips(2);
+vsPlayerBtn.addEventListener("click", () => {
+    startvsPlayer();
+    dialog.close();
+});
 
-handleDragDrop(p1, 1);
-handleDragDrop(p2, 2);
+vsComputerBtn.addEventListener("click", () => {
+    startvsCom();
+    dialog.close();
+});
 
-rotateButton();
-randomiseButton(p1, 1);
-randomiseButton(p2, 2);
-resetButton(p1, 1);
-resetButton(p2, 2);
+function startvsPlayer() {
+    p1 = Player("Player1");
+    p2 = Player("Player2");
+    initialise();
+}
+
+function startvsCom() {
+    p1 = Player("You");
+    p2 = Player("Computer", true);
+    initialise();
+}
 
 export async function check() {
     const results = await Promise.all([confirmAndStart(1), confirmAndStart(2)]);
@@ -40,6 +50,15 @@ export async function check() {
     }
 }
 check();
+
+function checkWin(p1, p2) {
+    if(p1.checkIfLose()) {
+        alert(`${p2.getName()} Won`)
+    }
+    if(p2.checkIfLose()) {
+        alert(`${p1.getName()} Won`)
+    }
+}
 
 export async function startGame() {
     if (p2.isComputer()) {
@@ -50,7 +69,7 @@ export async function startGame() {
     let p2Turn = false;
     const board1 = document.querySelector(".board1");
     const board2 = document.querySelector(".board2");
-    while (!p1.checkWin() && !p2.checkWin()) {
+    while (!p1.checkIfLose() && !p2.checkIfLose()) {
         if (p1Turn) {
             board1.classList.add("higlight-turn");
             let result = await monitorAttacks(p1, 1);
@@ -67,6 +86,7 @@ export async function startGame() {
             board2.classList.remove("higlight-turn");
         }
     }
+    checkWin(p1,p2);
 }
 
 async function startGameComputer() {
@@ -74,7 +94,7 @@ async function startGameComputer() {
     let p2Turn = false;
     const board1 = document.querySelector(".board1");
     const board2 = document.querySelector(".board2");
-    while (!p1.checkWin() && !p2.checkWin()) {
+    while (!p1.checkIfLose() && !p2.checkIfLose()) {
         if (p1Turn) {
             board1.classList.add("higlight-turn");
             let result = await attackComputer(p1, 1);
@@ -91,4 +111,25 @@ async function startGameComputer() {
             board2.classList.remove("higlight-turn");
         }
     }
+    checkWin(p1, p2)
+}
+
+function initialise() {
+    renderBoard(p1.board, 1);
+    renderBoard(p2.board, 2);
+
+    window.p1 = p1;
+    window.p2 = p2;
+
+    renderUnplacedShips(1);
+    renderUnplacedShips(2);
+
+    handleDragDrop(p1, 1);
+    handleDragDrop(p2, 2);
+
+    rotateButton();
+    randomiseButton(p1, 1);
+    randomiseButton(p2, 2);
+    resetButton(p1, 1);
+    resetButton(p2, 2);
 }

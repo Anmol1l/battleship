@@ -6,8 +6,8 @@ import {
 
 import { renderBoard, clearBoard } from "./render.js";
 import { Ship } from "./ship.js";
-import { placeShipsComputer, attackComputer } from "./computer.js";
-import { p2, p1, check } from "./index.js";
+import { placeShipsComputer } from "./computer.js";
+import { p2, check } from "./index.js";
 
 export function monitorAttacks(player, boardNum) {
     return new Promise((resolve) => {
@@ -25,10 +25,6 @@ export function monitorAttacks(player, boardNum) {
                     e.target.classList.add("success", "hit");
                     highlightHitShip(ship, boardNum);
                     resolve('success');
-                }
-
-                if (player.checkWin()) {
-                    alert(`${player.getName()} wins`);
                 }
             }
             board.removeEventListener("click", handler);

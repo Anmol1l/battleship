@@ -10,8 +10,8 @@ export function Player(name, ai = false) {
     function isComputer() {
         return computer
     }
-    function checkWin() {
+    function checkIfLose() {
         return board.allShipsDestroyed();
     }
-    return { board, getName, isComputer, checkWin };
+    return { board, getName, isComputer, checkIfLose };
 }
