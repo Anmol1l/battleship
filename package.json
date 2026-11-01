@@ -9,7 +9,9 @@
         "start": "webpack serve --config webpack.dev.js",
         "build": "webpack --config webpack.prod.js",
         "lint": "eslint src",
-        "format": "prettier . --write"
+        "format": "prettier . --write",
+        "predeploy": "npm run build",
+        "deploy": "gh-pages -d dist"
     },
     "repository": {
         "type": "git",
@@ -28,6 +30,7 @@
         "@eslint/js": "^10.0.1",
         "css-loader": "^7.1.4",
         "eslint": "^10.9.1",
+        "gh-pages": "^6.3.0",
         "globals": "^17.11.0",
         "html-loader": "^5.1.0",
         "html-webpack-plugin": "^5.6.8",
