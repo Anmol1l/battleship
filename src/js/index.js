@@ -52,11 +52,15 @@ export async function check() {
 check();
 
 function checkWin(p1, p2) {
+    const board1 = document.querySelector('.board1');
+    const board2 = document.querySelector('.board2');
     if(p1.checkIfLose()) {
-        alert(`${p2.getName()} Won`)
+        board1.classList.add('lose');
+        board2.classList.add('win');
     }
     if(p2.checkIfLose()) {
-        alert(`${p1.getName()} Won`)
+        board2.classList.add('lose');
+        board1.classList.add('win');
     }
 }
 

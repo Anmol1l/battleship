@@ -216,3 +216,11 @@ main > section {
     height: 40px;
     width: 40px;
 }
+
+.lose {
+    background-color: rgba(232, 88, 88, 0.499);
+}
+
+.win {
+    background-color: rgba(15, 219, 15, 0.46);
+}
