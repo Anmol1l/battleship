@@ -70,7 +70,6 @@ export async function startGame() {
 }
 
 async function startGameComputer() {
-    console.log("hi");
     let p1Turn = true;
     let p2Turn = false;
     const board1 = document.querySelector(".board1");
